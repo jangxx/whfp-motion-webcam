@@ -1,6 +1,6 @@
 {
   "name": "whfp-motion-webcam",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Webhookify Plugin to interact with the Motion webcam software",
   "main": "index.js",
   "scripts": {

@@ -10,6 +10,7 @@ class MotionWebcamPlugin extends Plugin {
 
 	handleFetch(payload, reply) {
 		let imgUrl = this.config.imgUrl;
+		let compression = ("compression" in this.config) ? this.config.compression : true;
 
 		if (imgUrl == undefined) {
 			return reply({ error: "No imgUrl specified" });
@@ -21,15 +22,19 @@ class MotionWebcamPlugin extends Plugin {
 		}, (err, resp, body) => {
 			if (err) return reply({ error: err.message });
 			
-			imagemin.buffer(body, {
-				plugins: [
-					imageminJpegtran()
-				]
-			}).then(img => {
-				reply({ image: img.toString("base64") });
-			}).catch(err => {
-				reply({ error: err.message });
-			});
+			if (compression) {
+				imagemin.buffer(body, {
+					plugins: [
+						imageminJpegtran()
+					]
+				}).then(img => {
+					reply({ image: img.toString("base64") });
+				}).catch(err => {
+					reply({ error: err.message });
+				});
+			} else {
+				reply({ image: body.toString("base64") });
+			}
 		});
 	}
 }
